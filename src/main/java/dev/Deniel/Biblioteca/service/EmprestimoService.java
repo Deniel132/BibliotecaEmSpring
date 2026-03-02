@@ -21,12 +21,14 @@ public class EmprestimoService {
 	private final ClienteService clienteService;
 	private final LivroService livroService;
 	private final EstoqueService estoqueService;
+	private final EmailService emailService;
 
-	public EmprestimoService(EmprestimoRepository emprestimoRepository, ClienteService clienteService, LivroService livroService, EstoqueService estoqueService) {
+	public EmprestimoService(EmprestimoRepository emprestimoRepository, ClienteService clienteService, LivroService livroService, EstoqueService estoqueService, EmailService emailService) {
 		this.emprestimoRepository = emprestimoRepository;
 		this.clienteService = clienteService;
 		this.livroService = livroService;
 		this.estoqueService = estoqueService;
+		this.emailService = emailService;
 	}
 
 
@@ -37,6 +39,8 @@ public class EmprestimoService {
 		emprestimoModel.setLivro(livroService.getById(emprestimoDTO.getIdLivro()));
 		emprestimoModel.setDataEmprestimo(emprestimoDTO.getDataEmprestimo());
 		emprestimoModel.setDateDeDevolucao(emprestimoDTO.getDateDeDevolucao());
+
+		emailService.emprestimoPorEmail(emprestimoModel);
 
 		return this.emprestimoRepository.save(emprestimoModel);
 	}
@@ -69,6 +73,7 @@ public class EmprestimoService {
 
 		livroModel.setEmprestado(false);
 		emprestimoModel.setDateDeDevolucao(LocalDate.now());
+		emailService.devolucaoPorEmail(emprestimoModel);
 		return emprestimoModel;
 	}
 

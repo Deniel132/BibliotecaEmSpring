@@ -16,6 +16,7 @@ public class LivroModel {
 	private Long id;
 
 
+	private String titulo;
 	private Long idNoEstoque;
 	private boolean emprestado = false;
 	private String statusDeUso;

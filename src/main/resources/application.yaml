@@ -1,6 +1,5 @@
 spring:
   datasource:
-
     url: jdbc:h2:file:./testeB/testeComBiblioteca
     driver-class-name: org.h2.Driver
     username: teste
@@ -18,3 +17,19 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: sr.aleatorio96@gmail.com
+    password: ${senha}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+logging:
+  level:
+    org.springframework.web.client.RestClient: DEBUG
