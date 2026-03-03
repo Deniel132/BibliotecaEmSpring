@@ -1,3 +1,0 @@
-2026-03-02 14:49:18.312735-03:00 jdbc[13]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "([*]"; expected "(, SELECT, TABLE, VALUES"; SQL statement:
-( [42001-240]
