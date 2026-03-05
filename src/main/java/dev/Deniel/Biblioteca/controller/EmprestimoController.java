@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/emprestimo")
+@CrossOrigin(origins = "*")
 public class EmprestimoController {
 
 
@@ -37,6 +38,7 @@ public class EmprestimoController {
 
 	@DeleteMapping("/deletar/{id}")
 	public void deletarEstoque(@PathVariable() Long id){this.emprestimoService.delete(id);}
+
 
 
 

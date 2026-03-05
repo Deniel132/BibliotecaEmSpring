@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/livro")
+@CrossOrigin(origins = "*")
 public class LivroController {
 
 
@@ -27,10 +28,10 @@ public class LivroController {
 	public List<LivroModel> listarLivros(){return livroService.getAll();}
 
 	@PostMapping
-	public LivroModel criarCliente(@RequestBody LivroModel livro){return this.livroService.save(livro);}
+	public LivroModel criarLivro(@RequestBody LivroModel livro){return this.livroService.save(livro);}
 
 	@DeleteMapping("/deletarconta/{id}")
-	public void deletarCliente(@PathVariable() Long id){this.livroService.delete(id);}
+	public void deletarLivro(@PathVariable() Long id){this.livroService.delete(id);}
 
 
 }
