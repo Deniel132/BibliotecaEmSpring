@@ -29,3 +29,7 @@ spring:
 logging:
   level:
     org.springframework.web.client.RestClient: DEBUG
+
+google:
+  books:
+    key: ${ChaveApi}

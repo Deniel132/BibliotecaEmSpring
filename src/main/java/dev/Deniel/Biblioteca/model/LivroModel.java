@@ -17,9 +17,11 @@ public class LivroModel {
 
 
 	private String titulo;
-	private Long idNoEstoque;
 	private boolean emprestado = false;
 	private String statusDeUso;
+	private String LinkImagem;
+	private String autor;
+	private boolean ativo = true;
 
 
 
