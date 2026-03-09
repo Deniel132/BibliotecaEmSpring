@@ -1,9 +1,12 @@
 package dev.Deniel.Biblioteca.service;
 
+import dev.Deniel.Biblioteca.dto.EstoqueDTO;
 import dev.Deniel.Biblioteca.dto.GoogleBooksDTO;
 import dev.Deniel.Biblioteca.model.ClienteModel;
+import dev.Deniel.Biblioteca.model.EstoqueModel;
 import dev.Deniel.Biblioteca.model.LivroModel;
 import dev.Deniel.Biblioteca.repository.EmprestimoRepository;
+import dev.Deniel.Biblioteca.repository.EstoqueRepository;
 import dev.Deniel.Biblioteca.repository.LivroRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -11,18 +14,22 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LivroService {
 	private final LivroRepository livroRepository;
 	private final GoogleBoksService googleBoksService;
 	private final EmprestimoRepository emprestimoRepository;
+	private final EstoqueRepository estoqueRepository;
 
 
-	public LivroService(LivroRepository livroRepository, GoogleBoksService googleBoksService, EmprestimoRepository emprestimoRepository) {
+	public LivroService(LivroRepository livroRepository, GoogleBoksService googleBoksService, EmprestimoRepository emprestimoRepository, EstoqueRepository estoqueRepository) {
 		this.livroRepository = livroRepository;
 		this.googleBoksService = googleBoksService;
 		this.emprestimoRepository = emprestimoRepository;
+		this.estoqueRepository = estoqueRepository;
+
 	}
 
 	public LivroModel saveByISBN(String isbn){
@@ -39,7 +46,11 @@ public class LivroService {
 		 LivroModel livroModel = new LivroModel();
 
 		livroModel.setTitulo(item.getTitle());
-		livroModel.setAutor(item.getAuthors().getFirst());
+		if (item.getAuthors() == null){
+			livroModel.setAutor("Autor Desconhecido");
+		}else {
+			livroModel.setAutor(item.getAuthors().getFirst());
+		}
 		livroModel.setLinkImagem(googleBoksService.getImagemCapa(item));
 		livroModel.setStatusDeUso("Livro Por ISBN");
 
@@ -52,7 +63,24 @@ public class LivroService {
 
 
 
-	public LivroModel save(LivroModel livroModel){return this.livroRepository.save(livroModel); }
+	public LivroModel save(LivroModel livroModel){
+		List<LivroModel> livrosIguais = getAll().stream().filter(f -> f.getAutor().equals(livroModel.getAutor())
+				&& f.getTitulo().equals(livroModel.getTitulo())).toList();
+
+
+		EstoqueModel estoqueModel = new EstoqueModel();
+
+		estoqueModel.setTituloDoLivro(livroModel.getTitulo());
+		estoqueModel.setAutor(livroModel.getAutor());
+
+		estoqueModel.setQuantidade(livrosIguais.size());
+		estoqueModel.setLivros(livrosIguais);
+
+
+		estoqueRepository.save(estoqueModel);
+		return this.livroRepository.save(livroModel);
+
+	}
 
 	@Transactional
 	public void delete(Long id){
@@ -70,7 +98,7 @@ public class LivroService {
 	public LivroModel getById(Long id){
 		LivroModel livroModel = this.livroRepository.findById(id).orElse(null);
 		if (livroModel == null) {
-			throw new EntityNotFoundException("Cliente nao encontrado");
+			throw new EntityNotFoundException("Livro nao encontrado");
 		}else{
 			return livroModel;
 		}

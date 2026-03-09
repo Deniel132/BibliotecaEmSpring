@@ -29,8 +29,6 @@ public class EstoqueService {
 
 		estoqueModel.setTituloDoLivro(estoqueDTO.getTituloDoLivro());
 		estoqueModel.setAutor(estoqueDTO.getAutor());
-		estoqueModel.setDataDePublicacao(estoqueDTO.getDataDePublicacao());
-		estoqueModel.setQuantidade(estoqueDTO.getQuantidade());
 
 		List<LivroModel> listaDeLivros = livrosNoEstoque(estoqueDTO.getIdLivros());
 

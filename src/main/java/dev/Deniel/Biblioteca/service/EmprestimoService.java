@@ -83,7 +83,7 @@ public class EmprestimoService {
 	public EmprestimoModel getById(Long id){
 		EmprestimoModel emprestimoModel = this.emprestimoRepository.findById(id).orElse(null);
 		if (emprestimoModel == null) {
-			throw new EntityNotFoundException("Cliente nao encontrado");
+			throw new EntityNotFoundException("emprestimo nao encontrado");
 		}else{
 			return emprestimoModel;
 		}
